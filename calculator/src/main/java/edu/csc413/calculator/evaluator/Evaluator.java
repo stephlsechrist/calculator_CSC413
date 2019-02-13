@@ -35,10 +35,13 @@ public class Evaluator {
     while ( this.tokenizer.hasMoreTokens() ) {
       // filter out spaces
       if ( !( token = this.tokenizer.nextToken() ).equals( " " )) {
+        System.out.println("is tokenizer a space?");
         // check if token is an operand
         if ( Operand.check( token )) {
+          System.out.println("Check if token is operand");
           operandStack.push( new Operand( token ));
         } else {
+          System.out.println("not operand, is operator");
           if ( ! Operator.check( token )) {
             System.out.println( "*****invalid token******" );
             throw new RuntimeException("*****invalid token******");
@@ -49,7 +52,8 @@ public class Evaluator {
           // The Operator class should contain an instance of a HashMap,
           // and values will be instances of the Operators.  See Operator class
           // skeleton for an example.
-          Operator newOperator = new Operator();
+          Operator newOperator = Operator.getOperator(token);
+          //Operator newOperator = new Operator();
           
           while (operatorStack.peek().priority() >= newOperator.priority() ) {
             // note that when we eval the expression 1 - 2 we will
@@ -57,12 +61,18 @@ public class Evaluator {
             // This means that the first number to be popped is the
             // second operand, not the first operand - see the following code
             Operator oldOpr = operatorStack.pop();
-            Operand op2 = operandStack.pop();
-            Operand op1 = operandStack.pop();
-            operandStack.push( oldOpr.execute( op1, op2 ));
+            // if statement added by me
+            // won't pop operands from stack if ( at top of operand stack
+//            if (!newOperator.check(token.equals(")")) && !(oldOperator.check(token.equals("("))) {
+              Operand op2 = operandStack.pop();
+              Operand op1 = operandStack.pop();
+              operandStack.push(oldOpr.execute(op1, op2));
+         //   }
           }
 
-          operatorStack.push( newOperator );
+  //        if (!newOperator.check(token.equals(")"))) {
+            operatorStack.push(newOperator);
+    //      }
         }
       }
     }
