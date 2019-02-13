@@ -47,16 +47,40 @@ public abstract class Operator {
      * "Returns true if specified token is an operator"
      */
     public static boolean check( String token ) {
-        if (operators.containsValue(token)){
+        System.out.println("Operator - Checking operator");
+/*
+        // initially used Operand.check(token) to check if token was an int
+        // if so, not a valid operator
+        // want to avoid coupling, so went back to try-catch block
+        if (!Operand.check(token)){
+            System.out.println("Operator - Operator is not a number, so a valid operand");
             return true;
         }
+        System.out.println("Operator - Operator is a number, not operand");
         return false;
+*/
+ /*       // if not a number, probably a valid operator, as our calculator GUI will only have proper operators
+        try {
+            int number = Integer.parseInt(token);
+            System.out.println("Operator - Token is an operand");
+            return false;
+        } catch (NumberFormatException error) {
+            System.out.println("Operator - Token is not an operand; valid operator");
+            return true;
+        }*/
+        // even better, if operator found in HashMap, it's a valid operator
+        try{
+            getOperator(token);
+            System.out.println("Operator - Token found in HashMap; success");
+            return true;
+        } catch (NumberFormatException error){
+            System.out.println("Operator - Token not found in HashMap; fail");
+            return false;
+        }
     }
 
 
     public static Operator getOperator(String token){
-
-
-        return null;
+        return operators.get(token);
     }
 }

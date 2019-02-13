@@ -35,17 +35,19 @@ public class Evaluator {
     while ( this.tokenizer.hasMoreTokens() ) {
       // filter out spaces
       if ( !( token = this.tokenizer.nextToken() ).equals( " " )) {
-        System.out.println("is tokenizer a space?");
+        System.out.println("Eval - is tokenizer a space?");
         // check if token is an operand
+        System.out.println(token);
         if ( Operand.check( token )) {
-          System.out.println("Check if token is operand");
+          System.out.println("Eval - token is operand; push on stack\n");
           operandStack.push( new Operand( token ));
         } else {
-          System.out.println("not operand, is operator");
+          System.out.println("Eval - not operand, is operator");
           if ( ! Operator.check( token )) {
             System.out.println( "*****invalid token******" );
             throw new RuntimeException("*****invalid token******");
           }
+          System.out.println("Eval - back in eval, about to use operator");
 
 
           // TODO Operator is abstract - these two lines will need to be fixed:
@@ -54,8 +56,10 @@ public class Evaluator {
           // skeleton for an example.
           Operator newOperator = Operator.getOperator(token);
           //Operator newOperator = new Operator();
-          
-          while (operatorStack.peek().priority() >= newOperator.priority() ) {
+
+
+          while (!operatorStack.isEmpty() && operatorStack.peek().priority() >= newOperator.priority()) {
+            System.out.println("Eval - Enter while loop: operator stack not empty & priority okay");
             // note that when we eval the expression 1 - 2 we will
             // push the 1 then the 2 and then do the subtraction operation
             // This means that the first number to be popped is the
@@ -71,6 +75,7 @@ public class Evaluator {
           }
 
   //        if (!newOperator.check(token.equals(")"))) {
+            System.out.println("Eval - Push operator on operator stack\n");
             operatorStack.push(newOperator);
     //      }
         }
@@ -88,7 +93,18 @@ public class Evaluator {
     // evaluating the operator stack until it only contains the init operator;
     // Suggestion: create a method that takes an operator as argument and
     // then executes the while loop.
-    
-    return 0;
+
+    System.out.println("Eval - reached end of expression");
+    System.out.println("Eval - evaluate what's left in stacks");
+//    System.out.println("Eval - " + operatorStack.peek() + operandStack.peek());
+    while(!operatorStack.isEmpty()){
+      Operator opr = operatorStack.pop();
+      Operand op2 = operandStack.pop();
+      Operand op1 = operandStack.pop();
+      operandStack.push(opr.execute(op1, op2));
+    }
+
+    int finalResult = operandStack.pop().getValue();
+    return finalResult;
   }
 }
