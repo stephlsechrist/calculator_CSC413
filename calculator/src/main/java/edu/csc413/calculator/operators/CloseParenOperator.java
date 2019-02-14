@@ -15,8 +15,10 @@ public class CloseParenOperator extends Operator{
     // when we get to ), don't want to add to stack
     // just want to execute until ) found
     // if my algorithm is right, this should never run
+    // ended up needing to return an Operand here so that my check in
+    // Operator.java works.
     public Operand execute(Operand op1, Operand op2){
-        System.out.println("in CloseParenOperator execute method");
-        return null;
+//        System.out.println("in CloseParenOperator execute method");
+        return op1;
     }
 }

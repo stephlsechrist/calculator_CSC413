@@ -35,37 +35,40 @@ public class Evaluator {
             // filter out spaces
             // didn't work until I added " " to delimiter list
             if (!(token = this.tokenizer.nextToken()).equals(" ")) {
-                System.out.println("Eval - is tokenizer a space?");
+//                System.out.println("Eval - is tokenizer a space?");
                 // check if token is an operand
-                System.out.println(token);
+//                System.out.println(token);
                 if (Operand.check(token)) {
-                    System.out.println("Eval - token is operand; push on stack\n");
+//                    System.out.println("Eval - token is operand; push on stack\n");
                     operandStack.push(new Operand(token));
                 } else {
-                    System.out.println("Eval - not operand, is operator");
+//                    System.out.println("Eval - not operand, is operator");
                     if (!Operator.check(token)) {
-                        System.out.println("*****invalid token******");
+//                        System.out.println("*****invalid token******");
                         throw new RuntimeException("*****invalid token******");
                     }
 
                     // if token is ), that means we need to backtrack through expression until we
                     // reach (, but not add ) to stack
                     else if (token.equals(")")) {
-                        System.out.println("Token is ). About to process until matching ( reached");
+//                        System.out.println("Token is ). About to process until matching ( reached");
+                        // couldn't get it to work by actually looking for a (
+                        // utilized priorities instead
                         while (operatorStack.peek().priority() != 0) {
-                            System.out.println("Entered while loop to process between ()");
+//                            System.out.println("Entered while loop to process between ()");
                             Operator oldOpr = operatorStack.pop();
-                            System.out.println("Operator being popped(priority) " + oldOpr.priority());
+//                            System.out.println("Operator being popped(priority) " + oldOpr.priority());
                             Operand op2 = operandStack.pop();
-                            System.out.println("First operand " + op2.getValue());
+//                            System.out.println("First operand " + op2.getValue());
                             Operand op1 = operandStack.pop();
-                            System.out.println("Second operand " + op1.getValue());
+//                            System.out.println("Second operand " + op1.getValue());
                             operandStack.push(oldOpr.execute(op1, op2));
-                            System.out.println("Result pushed is " + operandStack.peek().getValue());
+//                            System.out.println("Result pushed is " + operandStack.peek().getValue());
                         }
-                        System.out.println("Exit while loop");
+//                        System.out.println("Exit while loop");
+                        // pop ( off stack
                         operatorStack.pop();
-                        System.out.println("Popped off open paren");
+//                        System.out.println("Popped off open paren");
                     } else {
                         // TODO Operator is abstract - these two lines will need to be fixed:
                         // The Operator class should contain an instance of a HashMap,
@@ -74,42 +77,45 @@ public class Evaluator {
                         Operator newOperator = Operator.getOperator(token);
                         //Operator newOperator = new Operator();
 
+                        // don't want to compare to (, because ( priority is always 0 and will always
+                        // cause us to enter while block. need this if statement
                         if (!token.equals("(")) {
-                            System.out.println("Toekn not (");
+//                            System.out.println("Token not (");
                             while (!operatorStack.isEmpty() && operatorStack.peek().priority() >= newOperator.priority()) {
-                                System.out.println("Eval - Enter while loop: operator stack not empty & priority okay");
+//                                System.out.println("Eval - Enter while loop: operator stack not empty & priority okay");
                                 // note that when we eval the expression 1 - 2 we will
                                 // push the 1 then the 2 and then do the subtraction operation
                                 // This means that the first number to be popped is the
                                 // second operand, not the first operand - see the following code
                                 Operator oldOpr = operatorStack.pop();
-                                System.out.println("Operator priority popped " + oldOpr.priority());
+//                                System.out.println("Operator priority popped " + oldOpr.priority());
                                 Operand op2 = operandStack.pop();
-                                System.out.println("First operand popped " + op2.getValue());
+//                                System.out.println("First operand popped " + op2.getValue());
                                 Operand op1 = operandStack.pop();
-                                System.out.println("Second operand popped " + op1.getValue());
+//                                System.out.println("Second operand popped " + op1.getValue());
                                 operandStack.push(oldOpr.execute(op1, op2));
-                                System.out.println("Answer pushed on stack is " + operandStack.peek().getValue());
-/*
+//                                System.out.println("Answer pushed on stack is " + operandStack.peek().getValue());
+
+            /* // first attempt to deal with parentheses
               while (token.equals(")") && (oldOpr.priority() != 0)){
-                System.out.println("Enter while loop for inside paren");
+//                System.out.println("Enter while loop for inside paren");
                 Operand op2 = operandStack.pop();
-                System.out.println("popped operand");
+//                System.out.println("popped operand");
                 Operand op1 = operandStack.pop();
-                System.out.println("popped another operand");
+//                System.out.println("popped another operand");
                 operandStack.push(oldOpr.execute(op1, op2));
-                System.out.println("pushed executed operand");
-                System.out.println(operandStack.peek().getValue());
+//                System.out.println("pushed executed operand");
+//                System.out.println(operandStack.peek().getValue());
                 oldOpr = operatorStack.pop();
-                System.out.println(oldOpr.priority());
+//                System.out.println(oldOpr.priority());
               }*/
                             }
                         }
 
                         if (!token.equals(")")) {
-                            System.out.println("Eval - Push operator on operator stack\n");
+//                            System.out.println("Eval - Push operator on operator stack\n");
                             operatorStack.push(newOperator);
-                            System.out.println("Operator priority just pushed " + operatorStack.peek().priority());
+//                            System.out.println("Operator priority just pushed " + operatorStack.peek().priority());
                         }
                     }
                 }
@@ -128,9 +134,9 @@ public class Evaluator {
         // Suggestion: create a method that takes an operator as argument and
         // then executes the while loop.
 
-//        System.out.println("Eval - reached end of expression");
- //       System.out.println("Eval - evaluate what's left in stacks");
-//    System.out.println("Eval - " + operatorStack.peek() + operandStack.peek());
+////        System.out.println("Eval - reached end of expression");
+//        //       System.out.println("Eval - evaluate what's left in stacks");
+////    System.out.println("Eval - " + operatorStack.peek() + operandStack.peek());
         while (!operatorStack.isEmpty() && (operandStack.size() > 1)) {
             Operator opr = operatorStack.pop();
             Operand op2 = operandStack.pop();
