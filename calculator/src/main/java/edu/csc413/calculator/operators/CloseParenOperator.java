@@ -16,6 +16,7 @@ public class CloseParenOperator extends Operator{
     // just want to execute until ) found
     // if my algorithm is right, this should never run
     public Operand execute(Operand op1, Operand op2){
+        System.out.println("in CloseParenOperator execute method");
         return null;
     }
 }
