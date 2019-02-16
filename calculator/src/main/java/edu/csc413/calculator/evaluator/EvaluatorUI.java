@@ -68,7 +68,6 @@ public class EvaluatorUI extends JFrame implements ActionListener {
 
     // filled in by me
     public void actionPerformed(ActionEvent arg0) {
-//        System.out.println(arg0.getActionCommand());
         // keep adding input to text field until = sign is pressed, or
         // until other if statement triggered (C or CE)
 
