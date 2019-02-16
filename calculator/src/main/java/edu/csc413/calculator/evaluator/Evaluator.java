@@ -1,3 +1,15 @@
+/* *************************************************
+Evaluator.java
+
+Modified by: Stephanie Sechrist
+Last Edited: February 14, 2019
+
+eval(String expression): int
+Most of the code was provided.
+Consideration of (, ) added by me, as well as the code
+after tokenizer gets through the expression.
+************************************************* */
+
 package edu.csc413.calculator.evaluator;
 
 

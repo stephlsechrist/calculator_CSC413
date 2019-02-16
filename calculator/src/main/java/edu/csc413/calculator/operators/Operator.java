@@ -1,5 +1,16 @@
-package edu.csc413.calculator.operators;
+/* *************************************************
+Operator.java
 
+Created by: Stephanie Sechrist
+Last Edited: February 14, 2019
+
+Abstract class of operator subclasses.
+HashMap instantiated with static block.
+check(String token): boolean and
+getOperator(): Operator implemented
+************************************************* */
+
+package edu.csc413.calculator.operators;
 
 import edu.csc413.calculator.evaluator.Operand;
 

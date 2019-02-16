@@ -1,3 +1,13 @@
+/* *************************************************
+EvaluatorUI.java
+
+Modified by: Stephanie Sechrist
+Last Edited: February 16, 2019
+
+Most of the code was provided.
+actionPerformed(ActionEvent arg0) was implemented by me.
+************************************************* */
+
 package edu.csc413.calculator.evaluator;
 
 import edu.csc413.calculator.operators.Operator;
@@ -81,6 +91,8 @@ public class EvaluatorUI extends JFrame implements ActionListener {
 
             // don't need to do anything if nothing on txField
             if (fieldLength > 0) {
+                // need boolean. without it, if I'm trying to delete an operator,
+                // pressing CE will delete the operator and the following number.
                 boolean clicked = false;
 
                 if (Operator.check(String.valueOf(txField.getText().charAt(fieldLength - 1))) && (fieldLength != 0)) {

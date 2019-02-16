@@ -1,3 +1,16 @@
+/* *************************************************
+Operand.java
+
+Created by: Stephanie Sechrist
+Last Edited: February 14, 2019
+
+implemented the following:
+Operand constructor from an int
+Operand constructor from String token
+getValue(): int
+check(String token): boolean
+************************************************* */
+
 package edu.csc413.calculator.evaluator;
 
 /**
