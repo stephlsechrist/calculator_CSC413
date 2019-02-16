@@ -1,5 +1,7 @@
 package edu.csc413.calculator.evaluator;
 
+import edu.csc413.calculator.operators.Operator;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,8 +16,8 @@ public class EvaluatorUI extends JFrame implements ActionListener {
     // numbered from left to right, top to bottom
     // bText[] array contains the text for corresponding buttons
     private static final String[] bText = {
-        "7", "8", "9", "+", "4", "5", "6", "-", "1", "2", "3",
-        "*", "0", "^", "=", "/", "(", ")", "C", "CE"
+            "7", "8", "9", "+", "4", "5", "6", "-", "1", "2", "3",
+            "*", "0", "^", "=", "/", "(", ")", "C", "CE"
     };
 
     /**
@@ -64,17 +66,59 @@ public class EvaluatorUI extends JFrame implements ActionListener {
         setVisible(true);
     }
 
+    // filled in by me
     public void actionPerformed(ActionEvent arg0) {
-
 //        System.out.println(arg0.getActionCommand());
-        if (arg0.getActionCommand() != "=")
-            txField.setText(txField.getText() + arg0.getActionCommand());
-        if (arg0.getActionCommand() == "C"){
+        // keep adding input to text field until = sign is pressed, or
+        // until other if statement triggered (C or CE)
+
+        // if user clicks CE, clear until we reach most recent operator
+        // couldn't figure out a way to do this without treating the CE button as a backspace
+        // Tom Sechrist figured out a cool way, though, so I used his for loop logic.
+        // added ability to have CE delete the operator if that is the last thing entered
+        // (Sometimes I would accidentally click an operator twice and would have to start over)
+        if (arg0.getActionCommand().equals("CE")) {
+            int fieldLength = (txField.getText().length());
+
+            // don't need to do anything if nothing on txField
+            if (fieldLength > 0) {
+                boolean clicked = false;
+
+                if (Operator.check(String.valueOf(txField.getText().charAt(fieldLength - 1))) && (fieldLength != 0)) {
+                    clicked = true;
+                    txField.setText(txField.getText().substring(0, (fieldLength - 1)));
+                }
+                // if char at position[i] is an operand, delete it
+                // loops until operator found.
+
+                // update fieldLength
+                fieldLength = (txField.getText().length());
+                if (!clicked && (fieldLength != 0)) {
+                    // couldn't figure out how to get rid of StringIndexOutOfBoundsException that would happen
+                    // if CE was used until text field clear. used try catch to hide the bug.
+                    // would fix it in future updates with more time.
+                    try {
+                        for (int i = fieldLength - 1; Operand.check(String.valueOf(txField.getText().charAt(i))); i--) {
+//                        if (fieldLength > 1)
+                            txField.setText(txField.getText().substring(0, i));
+                        }
+                    } catch (StringIndexOutOfBoundsException error) {
+                    }
+                }
+            }
+        }
+        // if user clicks C, entire textfield is cleared
+        else if (arg0.getActionCommand().equals("C")) {
             txField.setText("");
         }
-        if (arg0.getActionCommand() == "=") {
+
+        // when user clicks =, we evaluate the expression they typed in
+        else if (arg0.getActionCommand().equals("=")) {
             Evaluator compute = new Evaluator();
             txField.setText(String.valueOf(compute.eval(txField.getText())));
+        } else if (!arg0.getActionCommand().equals("=")) {
+            txField.setText(txField.getText() + arg0.getActionCommand());
         }
     }
 }
+
