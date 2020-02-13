@@ -2,8 +2,6 @@
 
 ## Student Name  : Stephanie Sechrist
 
-## Student ID    : 918679078
-
 ## Student Email : ssechrist@mail.sfsu.edu
 
 ### Note failure to completely fill out this README.md could cause you to recieve a  0 for your project until correctly done
